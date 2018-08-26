@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <!--<script th:src="@{/static/js/test.js}"></script>-->
+</head>
+<body>
+<div>
+    <div>
+        名称:<!--/*@thymesVar id="name" type="com.example.pojo.Student"*/-->
+        <input th:id="${stu.name}" th:name="${stu.name}" th:value="${stu.name}"/>
+        <br/>
+        年龄:<input th:value="${stu.age}"/>
+        <br/>
+        生日:<input th:value="${stu.birthday}"/>
+        <br/>
+        生日:<input th:value="${#dates.format(stu.birthday,'YYYY-MM-DD hh:mm:ss')}"/>
+        <br/>
+        <span th:value="${stu.desc}"/>
+    </div>
+
+
+    <hr/>
+
+    <div th:Object="${stu}">
+        名称:<input th:id="*{name}" th:name="*{name}" th:value="*{name}"/>
+        <br/>
+        年龄:<input th:value="*{age}"/>
+        <br/>
+        生日:<input th:value="*{birthday}"/>
+        <br/>
+        生日:<input th:value="*{#dates.format(birthday,'YYYY-MM-DD hh:mm:ss')}"/>
+        <br/>
+    </div>
+
+    <hr/>
+    text 与 utext
+    <span th:text="${stu.desc}">abc</span>
+    <br/>
+    <span th:utext="${stu.desc}">abc</span>
+
+    <br/>
+
+    URL:
+    <a href="" th:href="@{http://www.imooc.com}">网站地址</a>
+
+    <hr/>
+    <form th:action="@{/html/postform}" th:object="${stu}" method="post" th:method="post">
+        <input type="text" th:field="*{name}"/>
+        <input type="text" th:field="*{age}"/>
+        <input type="submit"/>
+    </form>
+
+    <br/>
+
+    <div th:if="${stu.age} == 18">十八岁的天空</div>
+    <div th:if="${stu.age} gt 18">你老了</div>
+    <div th:if="${stu.age} lt 18">你很年轻</div>
+    <div th:if="${stu.age} ge 18">大于等于</div>
+    <div th:if="${stu.age} le 18">小于等于</div>
+
+    <hr/>
+
+    <select>
+        <option>选择框</option>
+        <option th:selected="${stu.name eq 'QL'}">QL</option>
+        <option th:selected="${stu.name eq 'imooc'}">imooc</option>
+        <option th:selected="${stu.name eq 'hello springboot ~~~'}">hello springboot ~~~'</option>
+    </select>
+
+
+    <hr/>
+
+    <table>
+        <tr>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>备注</th>
+            <th>生日</th>
+        </tr>
+
+        <tr th:each="stu:${studentList}">
+            <td th:text="${stu.name}"></td>
+            <td th:text="${stu.age gt 18 }?你老了:你很年轻"></td>
+            <td th:text="${stu.desc}"></td>
+            <td th:text="${#dates.format(stu.birthday,'yyyy-MM-dd hh:mm:ss')}"></td>
+        </tr>
+
+    </table>
+
+    <hr/>
+
+    <div th:switch="${stu.name}">
+        <p th:case="'hello springboot'">管理员</p>
+        <p th:case="#{roles.manager}">普通管理员</p>
+        <p th:case="#{roles.superadmin}">超级管理员</p>
+        <!--<p th:case="*">其他用户</p>-->
+    </div>
+
+</div>
+</body>
+</html>
